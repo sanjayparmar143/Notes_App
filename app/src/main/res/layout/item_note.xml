@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/_10sdp"
     app:cardElevation="@dimen/_7sdp"
     app:cardUseCompatPadding="true">
@@ -15,12 +15,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#BDB081">
+            android:orientation="horizontal"
+            android:background="#834BA6">
 
             <TextView
                 android:id="@+id/txttitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_margin="@dimen/_10sdp"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
@@ -28,7 +30,16 @@
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/pinkey"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:paddingRight="@dimen/_5sdp"
+                android:src="@drawable/unpin" />
+
         </LinearLayout>
+        
+
 
         <LinearLayout
             android:layout_width="match_parent"

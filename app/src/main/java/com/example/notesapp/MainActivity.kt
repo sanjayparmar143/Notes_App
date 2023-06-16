@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.TimePicker
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.notesapp.Adapters.NotesAdapter
-import com.example.notesapp.Database.RoomDB
+import com.example.notesapp.Entity.Database.RoomDB
 import com.example.notesapp.Entity.NotesEntity
 import com.example.notesapp.databinding.ActivityMainBinding
 import com.example.notesapp.databinding.AddDialoagBinding
@@ -36,9 +36,25 @@ class MainActivity : AppCompatActivity() {
             addNoteDialog()
         }
 
-        adapter = NotesAdapter(db.note().getNotes())
+        adapter = NotesAdapter {
+            var isPin = false
+            if (it.pin) {
+                isPin = false
+
+            } else {
+                isPin = true
+            }
+
+            var data = NotesEntity(it.title, it.text, it.date, it.month, it.year, isPin)
+            data.id = it.id
+            db.note().updateNote(data)
+            adapter.update(filternote(db.note().getNotes()))
+        }
+        adapter.setNotes(db.note().getNotes())
         binding.notelist.layoutManager = GridLayoutManager(this, 2)
         binding.notelist.adapter = adapter
+
+
 
         fun adddata(notesEntity: NotesEntity) {
             var dialog = Dialog(this)
@@ -47,6 +63,23 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+    fun filternote(list: List<NotesEntity>) : ArrayList<NotesEntity>{
+        var newlist = ArrayList<NotesEntity>()
+        for (l: NotesEntity in list){
+            if (l.pin){
+                newlist.add(l)
+            }
+        }
+        for (l: NotesEntity in list){
+            if (!l.pin){
+                newlist.add(l)
+            }
+        }
+
+        return newlist
+    }
+
 
     fun addNoteDialog() {
         var dialog = Dialog(this)
@@ -94,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             var year = bind.edtdate.text.toString()
             var format = SimpleDateFormat("DD-MM-YYYY hh:mm")
             var current = format.format(Date())
-            var data = NotesEntity(title, text, date, month, year)
+            var data = NotesEntity(title, text, date, month, year,false)
             db.note().addNote(data)
             adapter.update(db.note().getNotes())
             dialog.dismiss()

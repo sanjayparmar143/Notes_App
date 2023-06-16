@@ -1,4 +1,4 @@
-package com.example.notesapp.Database
+package com.example.notesapp.Entity.Database
 
 import android.content.Context
 import androidx.room.Database
